@@ -407,9 +407,6 @@ func menuLapangan(nLapangan *int) {
 	}
 }
 
-// ======================================================
-// Menu Data Penyewa
-// ======================================================
 func menuPenyewa(nPenyewa *int) {
 	var pilihan int = -1
 
@@ -444,9 +441,6 @@ func menuPenyewa(nPenyewa *int) {
 	}
 }
 
-// ======================================================
-// Menu Utama
-// ======================================================
 func menuUtama(nLapangan *int, nPenyewa *int) {
 	var pilihan int = -1
 
@@ -488,9 +482,6 @@ func menuUtama(nLapangan *int, nPenyewa *int) {
 	}
 }
 
-// ======================================================
-// Program Utama
-// ======================================================
 func main() {
 	var nLapangan int = 0
 	var nPenyewa int = 0
