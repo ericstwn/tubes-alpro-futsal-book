@@ -13,14 +13,7 @@ type Lapangan struct {
 	jamTutup     int
 }
 
-type Penyewa struct {
-	idPenyewa   string
-	namaPenyewa string
-	noTelepon   string
-}
-
 var dataLapangan [NMAX]Lapangan
-var dataPenyewa [NMAX]Penyewa
 
 func cariIndexLapangan(n int, id string) int {
 	var idx int = -1
@@ -28,20 +21,6 @@ func cariIndexLapangan(n int, id string) int {
 
 	for i < n && idx == -1 {
 		if dataLapangan[i].idLapangan == id {
-			idx = i
-		}
-		i = i + 1
-	}
-
-	return idx
-}
-
-func cariIndexPenyewa(n int, id string) int {
-	var idx int = -1
-	var i int = 0
-
-	for i < n && idx == -1 {
-		if dataPenyewa[i].idPenyewa == id {
 			idx = i
 		}
 		i = i + 1
@@ -102,8 +81,10 @@ func tambahLapangan(n *int) {
 
 			*n = *n + 1
 
+			fmt.Println()
 			fmt.Println("Data lapangan berhasil ditambahkan.")
 		} else {
+			fmt.Println()
 			fmt.Println("ID lapangan sudah digunakan.")
 		}
 	} else {
@@ -199,8 +180,10 @@ func ubahLapangan(n int) {
 			dataLapangan[idx].jamBuka = jamBukaBaru
 			dataLapangan[idx].jamTutup = jamTutupBaru
 
+			fmt.Println()
 			fmt.Println("Data lapangan berhasil diubah.")
 		} else {
+			fmt.Println()
 			fmt.Println("Data lapangan tidak ditemukan.")
 		}
 	} else {
@@ -231,145 +214,14 @@ func hapusLapangan(n *int) {
 			dataLapangan[*n-1] = Lapangan{}
 			*n = *n - 1
 
+			fmt.Println()
 			fmt.Println("Data lapangan berhasil dihapus.")
 		} else {
+			fmt.Println()
 			fmt.Println("Data lapangan tidak ditemukan.")
 		}
 	} else {
 		fmt.Println("Belum ada data lapangan.")
-	}
-}
-
-func tambahPenyewa(n *int) {
-	var id, nama, noTelp string
-	var idx int
-
-	fmt.Println("========================================")
-	fmt.Println("          TAMBAH DATA PENYEWA")
-	fmt.Println("========================================")
-
-	if *n < NMAX {
-		fmt.Print("Masukkan ID Penyewa     : ")
-		fmt.Scan(&id)
-
-		idx = cariIndexPenyewa(*n, id)
-
-		if idx == -1 {
-			fmt.Print("Masukkan Nama Penyewa   : ")
-			fmt.Scan(&nama)
-
-			fmt.Print("Masukkan Nomor Telepon  : ")
-			fmt.Scan(&noTelp)
-
-			dataPenyewa[*n].idPenyewa = id
-			dataPenyewa[*n].namaPenyewa = nama
-			dataPenyewa[*n].noTelepon = noTelp
-
-			*n = *n + 1
-
-			fmt.Println("Data penyewa berhasil ditambahkan.")
-		} else {
-			fmt.Println("ID penyewa sudah digunakan.")
-		}
-	} else {
-		fmt.Println("Data penyewa sudah penuh.")
-	}
-}
-
-func tampilPenyewa(n int) {
-	var i int
-
-	fmt.Println("====================================================")
-	fmt.Println("                   DATA PENYEWA")
-	fmt.Println("====================================================")
-
-	if n > 0 {
-		fmt.Printf("%-6s %-20s %-15s\n", "ID", "Nama", "No Telepon")
-		fmt.Println("----------------------------------------------------")
-
-		for i = 0; i < n; i++ {
-			fmt.Printf("%-6s %-20s %-15s\n",
-				dataPenyewa[i].idPenyewa,
-				dataPenyewa[i].namaPenyewa,
-				dataPenyewa[i].noTelepon)
-		}
-	} else {
-		fmt.Println("Belum ada data penyewa.")
-	}
-
-	fmt.Println("====================================================")
-}
-
-func ubahPenyewa(n int) {
-	var id string
-	var idx int
-	var namaBaru, noTelpBaru string
-
-	fmt.Println("========================================")
-	fmt.Println("           UBAH DATA PENYEWA")
-	fmt.Println("========================================")
-
-	if n > 0 {
-		fmt.Print("Masukkan ID Penyewa yang akan diubah: ")
-		fmt.Scan(&id)
-
-		idx = cariIndexPenyewa(n, id)
-
-		if idx != -1 {
-			fmt.Println()
-			fmt.Println("Data lama:")
-			fmt.Println("ID Penyewa    :", dataPenyewa[idx].idPenyewa)
-			fmt.Println("Nama Penyewa  :", dataPenyewa[idx].namaPenyewa)
-			fmt.Println("No Telepon    :", dataPenyewa[idx].noTelepon)
-			fmt.Println()
-
-			fmt.Print("Masukkan Nama Penyewa Baru  : ")
-			fmt.Scan(&namaBaru)
-
-			fmt.Print("Masukkan Nomor Telepon Baru : ")
-			fmt.Scan(&noTelpBaru)
-
-			dataPenyewa[idx].namaPenyewa = namaBaru
-			dataPenyewa[idx].noTelepon = noTelpBaru
-
-			fmt.Println("Data penyewa berhasil diubah.")
-		} else {
-			fmt.Println("Data penyewa tidak ditemukan.")
-		}
-	} else {
-		fmt.Println("Belum ada data penyewa.")
-	}
-}
-
-func hapusPenyewa(n *int) {
-	var id string
-	var idx int
-	var i int
-
-	fmt.Println("========================================")
-	fmt.Println("          HAPUS DATA PENYEWA")
-	fmt.Println("========================================")
-
-	if *n > 0 {
-		fmt.Print("Masukkan ID Penyewa yang akan dihapus: ")
-		fmt.Scan(&id)
-
-		idx = cariIndexPenyewa(*n, id)
-
-		if idx != -1 {
-			for i = idx; i < *n-1; i++ {
-				dataPenyewa[i] = dataPenyewa[i+1]
-			}
-
-			dataPenyewa[*n-1] = Penyewa{}
-			*n = *n - 1
-
-			fmt.Println("Data penyewa berhasil dihapus.")
-		} else {
-			fmt.Println("Data penyewa tidak ditemukan.")
-		}
-	} else {
-		fmt.Println("Belum ada data penyewa.")
 	}
 }
 
@@ -407,41 +259,7 @@ func menuLapangan(nLapangan *int) {
 	}
 }
 
-func menuPenyewa(nPenyewa *int) {
-	var pilihan int = -1
-
-	for pilihan != 0 {
-		fmt.Println()
-		fmt.Println("========================================")
-		fmt.Println("          KELOLA DATA PENYEWA")
-		fmt.Println("========================================")
-		fmt.Println("1. Tambah Data Penyewa")
-		fmt.Println("2. Tampilkan Data Penyewa")
-		fmt.Println("3. Ubah Data Penyewa")
-		fmt.Println("4. Hapus Data Penyewa")
-		fmt.Println("0. Kembali")
-		fmt.Println("========================================")
-		fmt.Print("Pilih menu: ")
-		fmt.Scan(&pilihan)
-		fmt.Println()
-
-		if pilihan == 1 {
-			tambahPenyewa(nPenyewa)
-		} else if pilihan == 2 {
-			tampilPenyewa(*nPenyewa)
-		} else if pilihan == 3 {
-			ubahPenyewa(*nPenyewa)
-		} else if pilihan == 4 {
-			hapusPenyewa(nPenyewa)
-		} else if pilihan == 0 {
-			fmt.Println("Kembali ke menu utama.")
-		} else {
-			fmt.Println("Pilihan tidak valid.")
-		}
-	}
-}
-
-func menuUtama(nLapangan *int, nPenyewa *int) {
+func menuUtama(nLapangan *int) {
 	var pilihan int = -1
 
 	for pilihan != 0 {
@@ -465,15 +283,15 @@ func menuUtama(nLapangan *int, nPenyewa *int) {
 		if pilihan == 1 {
 			menuLapangan(nLapangan)
 		} else if pilihan == 2 {
-			menuPenyewa(nPenyewa)
+			fmt.Println("Menu Data Penyewa belum digabung.")
 		} else if pilihan == 3 {
-			fmt.Println("Menu transaksi penyewaan belum dikerjakan.")
+			fmt.Println("Menu Transaksi Penyewaan belum digabung.")
 		} else if pilihan == 4 {
-			fmt.Println("Menu cari data penyewa belum dikerjakan.")
+			fmt.Println("Menu Cari Data Penyewa belum digabung.")
 		} else if pilihan == 5 {
-			fmt.Println("Menu jadwal kosong belum dikerjakan.")
+			fmt.Println("Menu Jadwal Kosong belum digabung.")
 		} else if pilihan == 6 {
-			fmt.Println("Menu statistik belum dikerjakan.")
+			fmt.Println("Menu Statistik belum digabung.")
 		} else if pilihan == 0 {
 			fmt.Println("Terima kasih telah menggunakan Futsal-Book.")
 		} else {
@@ -484,7 +302,6 @@ func menuUtama(nLapangan *int, nPenyewa *int) {
 
 func main() {
 	var nLapangan int = 0
-	var nPenyewa int = 0
 
-	menuUtama(&nLapangan, &nPenyewa)
+	menuUtama(&nLapangan)
 }
