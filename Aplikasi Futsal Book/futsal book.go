@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 const NMAX int = 100
 
@@ -42,6 +45,172 @@ var dataLapangan [NMAX]Lapangan
 var dataPenyewa [NMAX]Penyewa
 var dataSewa [NMAX]Sewa
 var dataJadwal [NMAX]JadwalKosong
+
+
+func simpanDataLapangan(n int) {
+	var file *os.File
+	var err error
+	var i int
+
+	file, err = os.Create("lapangan.txt")
+
+	if err == nil {
+		fmt.Fprintln(file, n)
+
+		for i = 0; i < n; i++ {
+			fmt.Fprintln(file,
+				dataLapangan[i].ID,
+				dataLapangan[i].Nama,
+				dataLapangan[i].Jenis,
+				dataLapangan[i].Harga,
+				dataLapangan[i].JamBuka,
+				dataLapangan[i].JamTutup)
+		}
+
+		file.Close()
+	}
+}
+
+func bacaDataLapangan(n *int) {
+	var file *os.File
+	var err error
+	var jumlah int
+	var i int
+
+	file, err = os.Open("lapangan.txt")
+
+	if err == nil {
+		fmt.Fscan(file, &jumlah)
+
+		if jumlah > NMAX {
+			jumlah = NMAX
+		}
+
+		*n = jumlah
+
+		for i = 0; i < *n; i++ {
+			fmt.Fscan(file,
+				&dataLapangan[i].ID,
+				&dataLapangan[i].Nama,
+				&dataLapangan[i].Jenis,
+				&dataLapangan[i].Harga,
+				&dataLapangan[i].JamBuka,
+				&dataLapangan[i].JamTutup)
+		}
+
+		file.Close()
+	}
+}
+
+func simpanDataPenyewa(n int) {
+	var file *os.File
+	var err error
+	var i int
+
+	file, err = os.Create("penyewa.txt")
+
+	if err == nil {
+		fmt.Fprintln(file, n)
+
+		for i = 0; i < n; i++ {
+			fmt.Fprintln(file,
+				dataPenyewa[i].ID,
+				dataPenyewa[i].Nama,
+				dataPenyewa[i].NoTelp)
+		}
+
+		file.Close()
+	}
+}
+
+func bacaDataPenyewa(n *int) {
+	var file *os.File
+	var err error
+	var jumlah int
+	var i int
+
+	file, err = os.Open("penyewa.txt")
+
+	if err == nil {
+		fmt.Fscan(file, &jumlah)
+
+		if jumlah > NMAX {
+			jumlah = NMAX
+		}
+
+		*n = jumlah
+
+		for i = 0; i < *n; i++ {
+			fmt.Fscan(file,
+				&dataPenyewa[i].ID,
+				&dataPenyewa[i].Nama,
+				&dataPenyewa[i].NoTelp)
+		}
+
+		file.Close()
+	}
+}
+
+func simpanDataSewa(n int) {
+	var file *os.File
+	var err error
+	var i int
+
+	file, err = os.Create("sewa.txt")
+
+	if err == nil {
+		fmt.Fprintln(file, n)
+
+		for i = 0; i < n; i++ {
+			fmt.Fprintln(file,
+				dataSewa[i].IDSewa,
+				dataSewa[i].IDPenyewa,
+				dataSewa[i].IDLapangan,
+				dataSewa[i].Tanggal,
+				dataSewa[i].Bulan,
+				dataSewa[i].Tahun,
+				dataSewa[i].JamMulai,
+				dataSewa[i].JamSelesai,
+				dataSewa[i].TotalHarga)
+		}
+
+		file.Close()
+	}
+}
+
+func bacaDataSewa(n *int) {
+	var file *os.File
+	var err error
+	var jumlah int
+	var i int
+
+	file, err = os.Open("sewa.txt")
+
+	if err == nil {
+		fmt.Fscan(file, &jumlah)
+
+		if jumlah > NMAX {
+			jumlah = NMAX
+		}
+
+		*n = jumlah
+
+		for i = 0; i < *n; i++ {
+			fmt.Fscan(file,
+				&dataSewa[i].IDSewa,
+				&dataSewa[i].IDPenyewa,
+				&dataSewa[i].IDLapangan,
+				&dataSewa[i].Tanggal,
+				&dataSewa[i].Bulan,
+				&dataSewa[i].Tahun,
+				&dataSewa[i].JamMulai,
+				&dataSewa[i].JamSelesai,
+				&dataSewa[i].TotalHarga)
+		}
+
+		file.Close()
+	}
+}
 
 func cariIndexLapangan(n int, id string) int {
 	var idx int = -1
@@ -136,6 +305,7 @@ func tambahLapangan(n *int) {
 			dataLapangan[*n].JamTutup = jamTutup
 
 			*n = *n + 1
+			simpanDataLapangan(*n)
 
 			fmt.Println("Data lapangan berhasil ditambahkan.")
 		} else {
@@ -231,6 +401,7 @@ func ubahLapangan(n int) {
 			dataLapangan[idx].Harga = hargaBaru
 			dataLapangan[idx].JamBuka = jamBukaBaru
 			dataLapangan[idx].JamTutup = jamTutupBaru
+			simpanDataLapangan(n)
 
 			fmt.Println("Data lapangan berhasil diubah.")
 		} else {
@@ -263,6 +434,7 @@ func hapusLapangan(n *int) {
 
 			dataLapangan[*n-1] = Lapangan{}
 			*n = *n - 1
+			simpanDataLapangan(*n)
 
 			fmt.Println("Data lapangan berhasil dihapus.")
 		} else {
@@ -299,6 +471,7 @@ func tambahPenyewa(n *int) {
 			dataPenyewa[*n].NoTelp = noTelp
 
 			*n = *n + 1
+			simpanDataPenyewa(*n)
 
 			fmt.Println("Data penyewa berhasil ditambahkan.")
 		} else {
@@ -363,6 +536,7 @@ func ubahPenyewa(n int) {
 
 			dataPenyewa[idx].Nama = namaBaru
 			dataPenyewa[idx].NoTelp = noTelpBaru
+			simpanDataPenyewa(n)
 
 			fmt.Println("Data penyewa berhasil diubah.")
 		} else {
@@ -395,6 +569,7 @@ func hapusPenyewa(n *int) {
 
 			dataPenyewa[*n-1] = Penyewa{}
 			*n = *n - 1
+			simpanDataPenyewa(*n)
 
 			fmt.Println("Data penyewa berhasil dihapus.")
 		} else {
@@ -575,6 +750,7 @@ func tambahSewa(nSewa *int, nLapangan int, nPenyewa int) {
 				sewa.TotalHarga = (sewa.JamSelesai - sewa.JamMulai) * dataLapangan[idxLapangan].Harga
 				dataSewa[*nSewa] = sewa
 				*nSewa = *nSewa + 1
+				simpanDataSewa(*nSewa)
 
 				fmt.Println("Data sewa berhasil ditambahkan.")
 				fmt.Println("Total harga:", sewa.TotalHarga)
@@ -1001,6 +1177,9 @@ func menuUtama(nLapangan *int, nPenyewa *int, nSewa *int) {
 		} else if pilihan == 6 {
 			menuStatistik(*nSewa)
 		} else if pilihan == 0 {
+			simpanDataLapangan(*nLapangan)
+			simpanDataPenyewa(*nPenyewa)
+			simpanDataSewa(*nSewa)
 			fmt.Println("Terima kasih telah menggunakan Futsal-Book.")
 		} else {
 			fmt.Println("Pilihan tidak valid.")
@@ -1012,6 +1191,10 @@ func main() {
 	var nLapangan int = 0
 	var nPenyewa int = 0
 	var nSewa int = 0
+
+	bacaDataLapangan(&nLapangan)
+	bacaDataPenyewa(&nPenyewa)
+	bacaDataSewa(&nSewa)
 
 	menuUtama(&nLapangan, &nPenyewa, &nSewa)
 }
